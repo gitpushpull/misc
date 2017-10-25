@@ -14,9 +14,11 @@ def get_nums(range_start, range_end, opr):
     return num1, num2
 
 def get_answer(num1, num2, opr):
-    ans = -1
+    ans = 'q'
     try:
-        ans = int(input('{0} {2} {1} = '.format(num1, num2, opr.value)))
+        ans = input('{0} {2} {1} = '.format(num1, num2, opr.value)).lower()
+        if ans != 'q':
+            ans = int(ans)
     except:
         print('Invalid input. Please try again.')
         return get_answer(num1, num2, opr)
@@ -35,18 +37,19 @@ def check_answer(num1, num2, ans, opr):
     return False
 
 def main(opr):
+    print('Q to quit.')
     range_start = 1
     range_end = 10
     stop = False
     while not stop:
         num1, num2 = get_nums(range_start, range_end, opr)
         ans = get_answer(num1, num2, opr)
-        if ans == -1:
+        if ans == 'q':
             stop = True
         while not stop and not check_answer(num1, num2, ans, opr):
             print('Wrong answer, try again: ')
             ans = get_answer(num1, num2, opr)
-            if ans == -1:
+            if ans == 'q':
                 stop = True
         if not stop:
             print('Great job.')
