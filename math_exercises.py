@@ -8,6 +8,8 @@ class Opr(Enum):
     MUL = 'x'
     DIV = u'\u00F7'
 
+CHOICE_OPS = [None, Opr.ADD, Opr.SUB, Opr.MUL, Opr.DIV]
+
 def get_nums(range_start, range_end, opr):
     num1 = randint(range_start, range_end)
     num2 = randint(range_start, num1 if opr == Opr.SUB else range_end)
@@ -36,8 +38,25 @@ def check_answer(num1, num2, ans, opr):
 
     return False
 
-def main(opr):
+def get_choice():
+    choice_prompt = 'Please chose what you want to practice:\n1: Addition\n'\
+    '2: Subtraction\n3: Multiplication\n4: Division\n'
+
+    choice = -1
+    
+    while not(1 <= choice <= 4):
+        try:
+            choice = int(input(choice_prompt))
+        except:
+            print('Invalid input, please try again.')
+
+    return choice
+
+
+def main():
     print('Q to quit.')
+    choice = get_choice()
+    opr = CHOICE_OPS[choice]
     range_start = 1
     range_end = 10
     stop = False
@@ -54,5 +73,5 @@ def main(opr):
         if not stop:
             print('Great job.')
 
-main(Opr.ADD)
+main()
 
