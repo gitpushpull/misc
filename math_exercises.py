@@ -3,6 +3,7 @@ from datetime import datetime
 from random import randint, seed
 from math import isclose
 
+
 class Opr(Enum):
     ADD = '+'
     SUB = '-'
@@ -10,6 +11,7 @@ class Opr(Enum):
     DIV = u'\u00F7'
 
 CHOICE_OPS = [None, Opr.ADD, Opr.SUB, Opr.MUL, Opr.DIV]
+CHOICE_DIF = [None, 10, 20, 50, 100]
 
 def get_nums(range_start, range_end, opr):
     num1 = randint(range_start, range_end)
@@ -40,29 +42,37 @@ def check_answer(num1, num2, ans, opr):
 
     return False
 
-def get_choice():
+def get_choice(prompt, start_range, end_range):
+    choice = -1
+
+    while not (start_range <= choice <= end_range):
+        try:
+            choice = int(input(prompt))
+        except:
+            print('Invalid input, please try again.')
+
+    return choice
+
+def get_exercise():
     choice_prompt = 'Please chose what you want to practice:\n1: Addition\n'\
     '2: Subtraction\n3: Multiplication\n4: Division\n'
 
-    choice = -1
-    
-    while not(1 <= choice <= 4):
-        try:
-            choice = int(input(choice_prompt))
-        except:
-            print('Invalid input, please try again.')
-    if choice == 4:
-        print('Please provide your answer upto two decimal places.')
+    return get_choice(choice_prompt, 1, 4)
 
-    return choice
+def get_difficulty():
+    choice_prompt = 'Please select difficulty level:\n1: Easy\n'\
+    '2: Normal\n3: Hard\n4: Extreme\n'
+
+    return get_choice(choice_prompt, 1, 4)
 
 
 def main():
     print('Q to quit.')
-    choice = get_choice()
+    choice = get_exercise()
     opr = CHOICE_OPS[choice]
+    choice = get_difficulty()
     range_start = 1
-    range_end = 10
+    range_end = CHOICE_DIF[choice]
     stop = False
     while not stop:
         num1, num2 = get_nums(range_start, range_end, opr)
