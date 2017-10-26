@@ -1,6 +1,7 @@
 from enum import Enum
 from datetime import datetime
 from random import randint, seed
+from math import isclose
 
 class Opr(Enum):
     ADD = '+'
@@ -12,7 +13,8 @@ CHOICE_OPS = [None, Opr.ADD, Opr.SUB, Opr.MUL, Opr.DIV]
 
 def get_nums(range_start, range_end, opr):
     num1 = randint(range_start, range_end)
-    num2 = randint(range_start, num1 if opr == Opr.SUB else range_end)
+    range_end = num1 if opr == Opr.SUB or opr == Opr.DIV else range_end
+    num2 = randint(range_start, range_end)
     return num1, num2
 
 def get_answer(num1, num2, opr):
@@ -20,7 +22,7 @@ def get_answer(num1, num2, opr):
     try:
         ans = input('{0} {2} {1} = '.format(num1, num2, opr.value)).lower()
         if ans != 'q':
-            ans = int(ans)
+            ans = float(ans) if opr == Opr.DIV else int(ans)
     except:
         print('Invalid input. Please try again.')
         return get_answer(num1, num2, opr)
@@ -34,7 +36,7 @@ def check_answer(num1, num2, ans, opr):
     elif (opr == Opr.MUL):
         return num1 * num2 == ans
     elif (opr == Opr.DIV):
-        return num1 / num2 == ans
+        return isclose(round(num1 / num2, 2), round(ans, 2))
 
     return False
 
@@ -49,6 +51,8 @@ def get_choice():
             choice = int(input(choice_prompt))
         except:
             print('Invalid input, please try again.')
+    if choice == 4:
+        print('Please provide your answer upto two decimal places.')
 
     return choice
 
