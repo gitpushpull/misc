@@ -47,9 +47,15 @@ def get_choice(prompt, start_range, end_range):
 
     while not (start_range <= choice <= end_range):
         try:
-            choice = int(input(prompt))
+            choice = input(prompt)
+            choice = int(choice)
         except:
-            print('Invalid input, please try again.')
+            choice = choice.lower()
+            if choice == 'q':
+                break
+            else:
+                choice = -1
+                print('Invalid input, please try again.')
 
     return choice
 
@@ -67,10 +73,14 @@ def get_difficulty():
 
 
 def main():
-    print('Q to quit.')
+    print('\n!!!\nEnter Q to quit.\n!!!\n')
     choice = get_exercise()
+    if choice == 'q':
+        return
     opr = CHOICE_OPS[choice]
     choice = get_difficulty()
+    if choice == 'q':
+        return
     range_start = 1
     range_end = CHOICE_DIF[choice]
     stop = False
